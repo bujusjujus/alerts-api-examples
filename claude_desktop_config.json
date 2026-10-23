@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "bujusjujus": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://bujusjuj.us/mcp", "--header", "Authorization:${BUJUS_AUTH}"],
+      "env": { "BUJUS_AUTH": "Bearer bjs_YOUR_KEY" }
+    }
+  }
+}
