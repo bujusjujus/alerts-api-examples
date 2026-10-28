@@ -14,6 +14,7 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 SECRET = os.environ["BUJUS_WEBHOOK_SECRET"]
+MAX_BODY = 64 * 1024  # a delivery is a few KB; never read more than this from anyone
 
 
 def verify(secret: str, raw_body: bytes, header: str) -> bool:
@@ -29,7 +30,16 @@ def verify(secret: str, raw_body: bytes, header: str) -> bool:
 
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        raw = self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+        except ValueError:
+            length = -1
+        if not 0 <= length <= MAX_BODY:
+            # Checked before reading: the sender is not verified yet.
+            self.send_response(413 if length > MAX_BODY else 400)
+            self.end_headers()
+            return
+        raw = self.rfile.read(length)
         if not verify(SECRET, raw, self.headers.get("X-Bujus-Signature", "")):
             self.send_response(401)
             self.end_headers()
