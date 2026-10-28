@@ -20,7 +20,7 @@ without an MCP library.
 | [`node/recent-drops.mjs`](node/recent-drops.mjs) | Prints what restocked in the last day | Any |
 | [`node/wait-for-drop.mjs`](node/wait-for-drop.mjs) | Long-polls for the next matching drop, with the cursor so nothing is missed | Live |
 | [`discord/delayed-feed.mjs`](discord/delayed-feed.mjs) | Posts restocks to a Discord channel, holding each one for the 5-minute display delay the terms require | Live |
-| [`python/webhook_receiver.py`](python/webhook_receiver.py) | Receives signed webhooks and verifies each signature | Live |
+| [`python/webhook_receiver.py`](python/webhook_receiver.py) | Receives signed webhooks, verifies each signature, and answers `test_webhook` checks | Live |
 
 The Node examples need Node 18 or later and no packages. Set `BUJUS_API_KEY` to your key.
 
